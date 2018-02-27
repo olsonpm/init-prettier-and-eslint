@@ -1,0 +1,32 @@
+{
+  "name": "init-prettier-and-eslint",
+  "version": "0.1.0",
+  "description": "A script to initialize my prettier and eslint settings",
+  "main": "index.js",
+  "bin": "index.js",
+  "dependencies": {
+    "chalk": "^2.3.1",
+    "child-process-promise": "^2.2.1",
+    "cli-spinner": "^0.2.8",
+    "pify": "^3.0.0",
+    "resolve-from": "^4.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Ain't no tests yet\" && exit 1"
+  },
+  "devDependencies": {
+    "eslint-config-personal": "github:olsonpm/eslint-config-personal",
+    "prettier": "^1.11.0"
+  },
+  "keywords": [],
+  "author": "Philip Olson",
+  "license": "SEE LICENSE IN license.txt",
+  "eslintConfig": {
+    "extends": "personal"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": false
+  }
+}
