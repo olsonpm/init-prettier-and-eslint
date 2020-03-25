@@ -72,9 +72,10 @@ function mergeEslintAndPrettierSettings(pjson) {
       extends: 'personal',
     },
     prettier: {
+      arrowParens: 'avoid',
+      semi: false,
       singleQuote: true,
       trailingComma: 'es5',
-      semi: false,
     },
   })
 }
