@@ -69,7 +69,7 @@ function parseJson(str) {
 function mergeEslintAndPrettierSettings(pjson) {
   return Object.assign(pjson, {
     eslintConfig: {
-      extends: 'personal',
+      extends: '@olsonpm/eslint-config-personal',
     },
     prettier: {
       arrowParens: 'avoid',
