@@ -93,5 +93,10 @@ function writeToFile(fpath) {
 }
 
 function getDevDependencies() {
-  return ['eslint', 'prettier', 'olsonpm/eslint-config-personal'].join(' ')
+  return [
+    'eslint',
+    'prettier',
+    'prettier-eslint',
+    'olsonpm/eslint-config-personal',
+  ].join(' ')
 }
