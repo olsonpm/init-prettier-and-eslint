@@ -22,7 +22,9 @@ const { exec } = require('child-process-promise'),
 
 const devDependencies = getDevDependencies(),
   packageJsonFilePath = resolveFrom(process.cwd(), './package.json'),
-  spinner = new Spinner('%s Installing devDependencies')
+  useYarn = process.argv.slice(2)[0] === '--yarn',
+  packageManager = useYarn ? 'yarn' : 'npm',
+  spinner = new Spinner(`%s Installing devDependencies using ${packageManager}`)
 
 // sets the animation number
 spinner.setSpinnerString(18)
@@ -35,7 +37,11 @@ spinner.setSpinnerDelay(100)
 
 spinner.start()
 
-exec(`npm i --save-dev ${devDependencies}`)
+const cmd = useYarn
+  ? `yarn add -D ${devDependencies}`
+  : `npm i --save-dev ${devDependencies}`
+
+exec(cmd)
   .then(() => {
     return readFile(packageJsonFilePath)
   })
