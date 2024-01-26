@@ -1,6 +1,6 @@
 {
   "name": "init-prettier-and-eslint",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A script to initialize my prettier and eslint settings",
   "main": "index.js",
   "bin": "index.js",
