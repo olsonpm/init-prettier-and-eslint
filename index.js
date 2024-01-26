@@ -99,10 +99,8 @@ function writeToFile(fpath) {
 }
 
 function getDevDependencies() {
-  return [
-    'eslint',
-    'prettier',
-    'prettier-eslint',
-    'olsonpm/eslint-config-personal',
-  ].join(' ')
+  const personalConfig = useYarn
+    ? 'https://github.com/olsonpm/eslint-config-personal'
+    : 'olsonpm/eslint-config-personal'
+  return ['eslint', 'prettier', 'prettier-eslint', personalConfig].join(' ')
 }
