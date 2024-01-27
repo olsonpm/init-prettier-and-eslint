@@ -20,9 +20,9 @@ const { exec } = require('child-process-promise'),
 // Init //
 //------//
 
-const devDependencies = getDevDependencies(),
+const useYarn = process.argv.slice(2)[0] === '--yarn',
+  devDependencies = getDevDependencies(),
   packageJsonFilePath = resolveFrom(process.cwd(), './package.json'),
-  useYarn = process.argv.slice(2)[0] === '--yarn',
   packageManager = useYarn ? 'yarn' : 'npm',
   spinner = new Spinner(`%s Installing devDependencies using ${packageManager}`)
 
