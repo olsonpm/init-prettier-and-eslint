@@ -1,7 +1,3 @@
-#! /usr/bin/env node
-
-'use strict'
-
 //---------//
 // Imports //
 //---------//
@@ -20,15 +16,11 @@ const { exec } = require('child-process-promise'),
 // Init //
 //------//
 
-const useYarn = process.argv.slice(2)[0] === '--yarn',
-  devDependencies = getDevDependencies(),
+const packageManager = getPackageManager(process.argv.slice(2)[0]),
+  devDependencies = getDevDependencies(packageManager),
   packageJsonFilePath = resolveFrom(process.cwd(), './package.json'),
-  packageManager = useYarn ? 'yarn' : 'npm',
-  spinner = new Spinner(`%s Installing devDependencies using ${packageManager}`)
-
-// sets the animation number
-spinner.setSpinnerString(18)
-spinner.setSpinnerDelay(100)
+  spinner = getSpinner(packageManager),
+  cmd = `${packageManager} add -D ${devDependencies}`
 
 //
 //------//
@@ -37,14 +29,8 @@ spinner.setSpinnerDelay(100)
 
 spinner.start()
 
-const cmd = useYarn
-  ? `yarn add -D ${devDependencies}`
-  : `npm i --save-dev ${devDependencies}`
-
 exec(cmd)
-  .then(() => {
-    return readFile(packageJsonFilePath)
-  })
+  .then(() => readFile(packageJsonFilePath))
   .then(
     flow([
       parseJson,
@@ -99,8 +85,25 @@ function writeToFile(fpath) {
 }
 
 function getDevDependencies() {
-  const personalConfig = useYarn
-    ? 'https://github.com/olsonpm/eslint-config-personal'
-    : 'olsonpm/eslint-config-personal'
+  const personalConfig =
+    packageManager === 'yarn'
+      ? 'https://github.com/olsonpm/eslint-config-personal'
+      : 'olsonpm/eslint-config-personal'
   return ['eslint', 'prettier', 'prettier-eslint', personalConfig].join(' ')
+}
+
+function getPackageManager(pmArg) {
+  let packageManager = 'npm'
+  if (pmArg === '--yarn') packageManager = 'yarn'
+  else if (pmArg === '--pnpm') packageManager = 'pnpm'
+
+  return packageManager
+}
+
+function getSpinner(packageManager) {
+  new Spinner(`%s Installing devDependencies using ${packageManager}`)
+
+  // sets the animation number
+  spinner.setSpinnerString(18)
+  spinner.setSpinnerDelay(100)
 }
