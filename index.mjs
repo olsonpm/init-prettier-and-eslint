@@ -2,11 +2,11 @@
 // Imports //
 //---------//
 
-const path = require('node:path')
-const pfs = require('node:fs/promises')
-const chalk = require('chalk')
-const { exec } = require('child-process-promise')
-const { Spinner } = require('cli-spinner')
+import path from 'node:path'
+import pfs from 'node:fs/promises'
+import { execute } from 'async-execute'
+import { green, red } from 'tiny-chalk'
+import yoctoSpinner from 'yocto-spinner'
 
 //
 //------//
@@ -15,7 +15,9 @@ const { Spinner } = require('cli-spinner')
 
 const packageManager = getPackageManager(process.argv.slice(2)[0])
 const devDependencies = getDevDependencies(packageManager)
-const spinner = getSpinner(packageManager)
+const spinner = yoctoSpinner({
+  text: `Installing devDependencies using ${packageManager}`,
+})
 const cmd = `${packageManager} add -D ${devDependencies}`
 
 //
@@ -28,12 +30,11 @@ run()
 async function run() {
   try {
     spinner.start()
-    await exec(cmd)
+    await execute(cmd)
     await writeConfigs()
-    console.log('\n' + chalk.green('Done!'))
+    spinner.stop(green('Done !'))
   } catch (err) {
-    console.error('error installing\n', err)
-  } finally {
+    console.error(red('error installing\n'), err)
     spinner.stop()
   }
 }
@@ -78,16 +79,4 @@ function getPackageManager(pmArg) {
   else if (pmArg === '--pnpm') packageManager = 'pnpm'
 
   return packageManager
-}
-
-function getSpinner(packageManager) {
-  const result = new Spinner(
-    `%s Installing devDependencies using ${packageManager}`
-  )
-
-  // sets the animation number
-  result.setSpinnerString(18)
-  result.setSpinnerDelay(100)
-
-  return result
 }

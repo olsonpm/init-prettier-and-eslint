@@ -1,3 +1,3 @@
-import cfg from 'eslint-config-personal/base'
+import cfg from '@olsonpm/eslint-config-personal/base'
 
 export default cfg
