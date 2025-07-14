@@ -19,6 +19,7 @@ const spinner = yoctoSpinner({
   text: `Installing devDependencies using ${packageManager}`,
 })
 const cmd = `${packageManager} add -D ${devDependencies}`
+const dirname = getDirname()
 
 //
 //------//
@@ -58,7 +59,7 @@ async function writeConfigs() {
 }
 
 function read(fname) {
-  return pfs.readFile(path.resolve(import.meta.dirname, fname), 'utf8')
+  return pfs.readFile(path.resolve(dirname, fname), 'utf8')
 }
 
 function write(fname, content) {
@@ -79,4 +80,14 @@ function getPackageManager(pmArg) {
   else if (pmArg === '--pnpm') packageManager = 'pnpm'
 
   return packageManager
+}
+
+// feels odd for import.meta.dirname to be missing when I try to install via
+// pnpm, but let's assume it's for a good reason heh
+function getDirname() {
+  const { dirname, url } = import.meta
+  if (dirname) return dirname
+
+  const urlSansProtocol = url.slice('file://'.length)
+  return path.dirname(urlSansProtocol)
 }
