@@ -46,15 +46,13 @@ async function run() {
 //------------------//
 
 async function writeConfigs() {
-  const [prettierCfg, eslintCfg, eslintCliCfg] = await Promise.all([
+  const [prettierCfg, eslintCfg] = await Promise.all([
     read('prettier.config.mjs'),
     read('eslint.config.mjs'),
-    read('eslint.cli.config.mjs'),
   ])
   await Promise.all([
     write('prettier.config.mjs', prettierCfg),
     write('eslint.config.mjs', eslintCfg),
-    write('eslint.cli.config.mjs', eslintCliCfg),
   ])
 }
 
