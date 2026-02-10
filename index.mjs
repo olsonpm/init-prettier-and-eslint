@@ -69,13 +69,13 @@ function getDevDependencies() {
     packageManager === 'yarn'
       ? 'https://github.com/olsonpm/eslint-config-personal'
       : 'olsonpm/eslint-config-personal'
-  return ['eslint', 'prettier', personalConfig].join(' ')
+  return ['eslint@9', 'prettier', personalConfig].join(' ')
 }
 
 function getPackageManager(pmArg) {
-  let packageManager = 'npm'
+  let packageManager = 'pnpm'
   if (pmArg === '--yarn') packageManager = 'yarn'
-  else if (pmArg === '--pnpm') packageManager = 'pnpm'
+  else if (pmArg === '--npm') packageManager = 'npm'
 
   return packageManager
 }
